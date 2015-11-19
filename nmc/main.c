@@ -4,9 +4,9 @@
 #include <string.h>
 #include <easynmc/easynmc.h>
 #include <easynmc/aura.h>
-#include "nmpp.h"
+//#include "nmpp.h"
 #include "fft.h"
-
+// #include "malloc32.h"
 unsigned int *pinmux  = (unsigned int *) 0x0800CC21;
 unsigned int *port    = (unsigned int *) 0x0800A403;
 unsigned int *ddr     = (unsigned int *) 0x0800A407;
@@ -84,25 +84,35 @@ void aura_nmc_nmppsAdd_s32_256(void *in, void *out)
 }
 
 
-void aura_nmc_nmppsFwdFFT256(void *in, void *out)
+void aura_nmc_nmppsFFT256Fwd(void *in, void *out)
 {
 	int i=0;
 	int sum=0;
-	int *dst ;	
-	int *src = aura_get_buf(256*2*4);
+	nm32sc *dst ;	
+	nm32sc *src = aura_get_buf(256*2*4);
 	
+	clock_t t0,t1,t;
+	
+	
+	dst= nmppsMalloc32(256*2*4);	
 
-	int *dst = nmppsMalloc32(256*2*4);	
+	NmppsFFTSpec spec;
+	fseq64 route;
+	nmppsFFT256FwdOptimize(src,dst, &route);
 	
-	NmppsFFT spec;
-	nmppsFwdFFT256InitAlloc(nmppsMalloc32, nmppsFree32, &spec);
-	nmppsFwdFFT256(src,dst;)
-	nmppsFFTFree(spec);
-	
-	
-	printf("NMC: hello from aura_nmc_nmppsFwdFFT256\n");
+	nmppsMalloc32SetRouteMode(route);
+	nmppsFFT256FwdInitAlloc(nmppsMalloc32, nmppsFree, &spec);
+	t0=clock();
+	nmppsFFT256Fwd(src,dst,&spec);
+	t1=clock();
+	t=t1-t0;
+	nmppsFFTFree(&spec);
+	printf("NMC: route is: 0x%X \n", route);
+	printf("NMC: Time is: %d\n", t);
+
+	printf("NMC: hello from aura_nmc_nmppsFFT256Fwd\n");
 	aura_put_buf(dst, 256*4);
-//	nmppsFree(dst);
+	nmppsFree(dst);
 }
 
 int main(int argc, char **argv)

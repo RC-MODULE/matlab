@@ -17,7 +17,7 @@ AURA_METHOD(aura_nmc_nmppsAdd_s32_256, Add_s32_256,
 	    BIN(1024));
 
 
-AURA_METHOD(aura_nmc_nmppsFwdFFT256, FwdFFT256, 
+AURA_METHOD(aura_nmc_nmppsFFT256Fwd, FFT256Fwd, 
 	    BIN(2048), 
 	    BIN(2048));
 

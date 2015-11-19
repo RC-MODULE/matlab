@@ -19,7 +19,7 @@ void aura_arm_nmppsFwdFFT256(struct aura_node *n )
 	
 	int ret;
 	struct aura_buffer *retbuf; 
-	ret = aura_call(n, "FwdFFT256", &retbuf, src);
+	ret = aura_call(n, "FFT256Fwd", &retbuf, src);
 	if (ret != 0) 
 	    BUG(n, "Call failed!");
 
@@ -30,7 +30,7 @@ void aura_arm_nmppsFwdFFT256(struct aura_node *n )
 	//      slog(0, SLOG_ERROR, "ARM: test  aura_arm_nmppsAbs_s32_256 is NOT ok: [%d] %d vs %d",i, dst[i], tst[i]); 
 	//}
 	aura_buffer_release(n, retbuf);
-	slog(0, SLOG_INFO, "ARM: TEST aura_arm_nmppsFwdFFT256 is ok");
+	slog(0, SLOG_INFO, "ARM: TEST aura_arm_nmppsFFT256Fwd is ok");
 }
 
 void aura_arm_nmppsSum_s32_256(struct aura_node *n )
@@ -145,10 +145,11 @@ int main() {
 	}
 	aura_wait_status(n, AURA_STATUS_ONLINE);
 
+	aura_arm_nmppsFwdFFT256(n);
 	aura_arm_nmppsAbs_s32_256(n);
 	aura_arm_nmppsAdd_s32_256(n);
 	aura_arm_nmppsSum_s32_256(n);
-	aura_arm_nmppsFwdFFT256(n);
+	
 	
 	//test_u32(n);
 	//test_sum_u32(n);

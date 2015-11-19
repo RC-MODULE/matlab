@@ -34,9 +34,9 @@ C2ASM_FLAGS     = -soc -q
 #BIG FAT WARNING: easynmc.lib MUST go BEFORE libc
 #BIG FAT WARNING: Otherwise argc/argv won't work 
 
-LIBS            = easynmc.lib libc05.lib nmpp_nmc3.lib
+LIBS            = easynmc.lib libc05.lib nmpp_nmc3.lib libint_soc.lib
 
-BUILDER_FLAGS	= -cK1879.cfg -m -heap=0 -heap1=0 -heap2=0 -heap3=0 -stack=20000 \
+BUILDER_FLAGS	= -cK1879.cfg -m -heap=4000 -heap1=26384 -heap2=26384 -heap3=26384 -stack=2000 \
 		  -full_names
 IDIRS           = -I. -I"$(NEURO)/include" -I"$(NMPP)/include"
 LIBDIR		= -l"$(NEURO)/lib" -l"$(EASYNMC_DIR)" -l$(NMPP)/lib
