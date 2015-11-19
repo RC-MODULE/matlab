@@ -20,10 +20,10 @@ OBJECTS :=  \
 	aura-exports.o
 
 TARGET=fft-nmc
+NMPP  = /home/mushkaev/git/nmpp
 
 # Set this to libeasynmc-nmc dir. Relative or absolute. 
 # Make sure you build it prior to building the actual project. 
-
 EASYNMC_DIR     = /home/mushkaev/matlab/aura/nmc-utils/libeasynmc-nmc
 
 CROSS_COMPILE   =
@@ -34,23 +34,23 @@ C2ASM_FLAGS     = -soc -q
 #BIG FAT WARNING: easynmc.lib MUST go BEFORE libc
 #BIG FAT WARNING: Otherwise argc/argv won't work 
 
-LIBS            = easynmc.lib libc05.lib
+LIBS            = easynmc.lib libc05.lib nmpp_nmc3.lib
 
 BUILDER_FLAGS	= -cK1879.cfg -m -heap=0 -heap1=0 -heap2=0 -heap3=0 -stack=20000 \
 		  -full_names
-IDIRS           = -I. -I"$(NEURO)/include" 
-LIBDIR		= -l"$(NEURO)/lib" -l"$(EASYNMC_DIR)"
+IDIRS           = -I. -I"$(NEURO)/include" -I"$(NMPP)/include"
+LIBDIR		= -l"$(NEURO)/lib" -l"$(EASYNMC_DIR)" -l$(NMPP)/lib
 
 .DEFAULT_GOAL=all
 
 all: $(TARGET).abs
 
 %.asmx: %.cpp
-	$(SILENT_DEP)$(CROSS_COMPILE)gcc -E -MM $(<) -o$(@).dep
+	$(SILENT_DEP)$(CROSS_COMPILE)gcc -E -MM $(<) -o$(@).dep $(IDIRS) 
 	$(SILENT_NMCPP)nmcpp -Tp $(NMCPP_FLAGS) $(<) -O$(@) $(IDIRS) 
 
 %.asmx: %.c
-	$(SILENT_DEP)$(CROSS_COMPILE)gcc -E -MM $(<) -o$(@).dep
+	$(SILENT_DEP)$(CROSS_COMPILE)gcc -E -MM $(<) -o$(@).dep $(IDIRS) 
 	$(SILENT_NMCPP)nmcpp -Tc99 $(NMCPP_FLAGS) $(<) -O$(@) $(IDIRS) 
 
 %.o: %.asmx

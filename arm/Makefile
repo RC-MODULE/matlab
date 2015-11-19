@@ -9,11 +9,10 @@ NMPP     = /home/mushkaev/git/nmpp
 
 CC       = arm-module-linux-gnueabi-gcc 
 
-INC_DIRS = -I../../include
-INC_DIRS+= -Inmc-utils/include/ -DLIBEASYNMC_VERSION=\"0.1.1\"
+INC_DIRS+= -I./aura/include
+INC_DIRS+= -I./nmc-utils/include/ -DLIBEASYNMC_VERSION=\"0.1.1\"
 INC_DIRS+= -I/home/mushkaev/matlab/linux-3.10.x/include/uapi
 INC_DIRS+= -I/home/mushkaev/matlab/linux-3.10.x/drivers/staging/android/uapi
-INC_DIRS+= -I./aura/include
 INC_DIRS+= -I$(NMPP)/include
 
 SRC_DIRS = . ./aura ./nmc-utils 
@@ -44,6 +43,3 @@ clean:
 	-cd nmc-utils && make clean
 
 	
-	
-	
-.PHONY: doxygen

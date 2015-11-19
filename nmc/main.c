@@ -4,7 +4,8 @@
 #include <string.h>
 #include <easynmc/easynmc.h>
 #include <easynmc/aura.h>
-
+#include "nmpp.h"
+#include "fft.h"
 
 unsigned int *pinmux  = (unsigned int *) 0x0800CC21;
 unsigned int *port    = (unsigned int *) 0x0800A403;
@@ -70,17 +71,39 @@ void aura_nmc_nmppsAdd_s32_256(void *in, void *out)
 {
 	int i=0;
 	int sum=0;
+	int dst[256];	
 	int *src0 = aura_get_buf(256*4);
 	int *src1 = aura_get_buf(256*4);
-	int dst[256];	
+	
 	for(i=0; i<256; i++){
 	    dst[i]=src0[i]+src1[i];
-	    printf("NMC: from aura_nmc_nmppsAbs_s32_256 [%d] %d %d %d\n",i, dst[i] , src0[i], src1[i] );
+	    //printf("NMC: from aura_nmc_nmppsAdd_s32_256 [%d] %d %d %d\n",i, dst[i] , src0[i], src1[i] );
 	}
 	printf("NMC: hello from aura_nmc_nmppsAdd_s32_256\n");
 	aura_put_buf(dst, 256*4);
 }
 
+
+void aura_nmc_nmppsFwdFFT256(void *in, void *out)
+{
+	int i=0;
+	int sum=0;
+	int *dst ;	
+	int *src = aura_get_buf(256*2*4);
+	
+
+	int *dst = nmppsMalloc32(256*2*4);	
+	
+	NmppsFFT spec;
+	nmppsFwdFFT256InitAlloc(nmppsMalloc32, nmppsFree32, &spec);
+	nmppsFwdFFT256(src,dst;)
+	nmppsFFTFree(spec);
+	
+	
+	printf("NMC: hello from aura_nmc_nmppsFwdFFT256\n");
+	aura_put_buf(dst, 256*4);
+//	nmppsFree(dst);
+}
 
 int main(int argc, char **argv)
 {

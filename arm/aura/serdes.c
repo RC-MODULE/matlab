@@ -205,10 +205,10 @@ static inline void va_put_S64(struct aura_buffer *buf, va_list ap, bool swap)
 	buf->pos+=sizeof(v);	
 }
 
-static inline void va_put_BIN(struct aura_buffer *buf, int len, va_list ap)
+static inline void va_put_BIN(struct aura_buffer *buf, int len, va_list *ap)
 {
-	void *ptr = (void *) va_arg(ap, uint32_t);
-	slog(0, SLOG_DEBUG, "put bin ptr 0x%x", ptr);
+	void *ptr = va_arg(*ap, void *);
+	//slog(0, SLOG_DEBUG, "ptr %x", ptr);
 	memcpy(&buf->data[buf->pos], ptr, len);
 	buf->pos+=len;
 }
@@ -250,7 +250,7 @@ struct aura_buffer *aura_serialize(struct aura_node *node, const char *fmt, va_l
 			int len = atoi(fmt);
 			if (len == 0) 
 				BUG(NULL, "Internal serilizer bug processing: %s", fmt);
-			va_put_BIN(buf, len, ap);
+			va_put_BIN(buf, len, &ap);
 			while (*fmt && (*fmt++ != '.'));
 			break;
 		}
