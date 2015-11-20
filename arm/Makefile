@@ -13,19 +13,26 @@ CC       = arm-module-linux-gnueabi-gcc
 
 INC_DIRS+= -I$(AURA)/include -I$(AURA)/nmc-utils/include
 INC_DIRS+= -DLIBEASYNMC_VERSION=\"0.1.1\"
-INC_DIRS+= -I/home/mushkaev/matlab/linux-3.10.x/include/uapi
-INC_DIRS+= -I/home/mushkaev/matlab/linux-3.10.x/drivers/staging/android/uapi
+#INC_DIRS+= -I/home/mushkaev/matlab/linux-3.10.x/include/uapi
+#INC_DIRS+= -I/home/mushkaev/matlab/linux-3.10.x/drivers/staging/android/uapi
+#INC_DIRS+= -I/include/uapi
+#INC_DIRS+= -I/drivers/staging/android/uapi
+INC_DIRS+= -I./include
 
-CC_FLAGS =-Iinclude/ -g -Wall -fPIC $(INC_DIRS)
+
+CC_FLAGS = -g -Wall -fPIC $(INC_DIRS)
 LD_FLAGS+=-rdynamic -g  -lelf
 
 #-L$(NMPP)/lib
 #INC_DIRS+= -I$(NMPP)/include
 #SRC_DIRS = . ./aura 
+#ALL_C    = $(wildcard $(addsuffix /*.c,$(SRC_DIRS)))
+
 VPATH    = $(AURA) $(AURA)/nmc-utils
 
 
-#ALL_C    = $(wildcard $(addsuffix /*.c,$(SRC_DIRS)))
+
+
 ALL_C   = ./fft-arm.c 
 ALL_C   += $(AURA)/aura.c 
 ALL_C   += $(AURA)/buffer.c 
@@ -67,5 +74,6 @@ $(TARGET): $(OBJECTS_C)
 clean:
 	-rm *.o $(TARGET)
 	-cd nmc-utils && make clean
+	$(MAKE) -C ../nmc clean
 
 	
