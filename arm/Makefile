@@ -1,6 +1,6 @@
 .SUFFIXES:
 ifeq ($(OS),Windows_NT)
-SHELL =cmd
+SHELL = cmd
 AURA  = d:/git/aura
 CC    = d:/SDK/arm-module-linux-gnueabihf/bin/arm-module-linux-gnueabihf-gcc.exe
 else
@@ -14,7 +14,6 @@ DESTDIR?=
 TARGET   = fft-arm
 NMPP     ?= /home/mushkaev/git/nmpp
 AURA     ?= /home/mushkaev/git/aura
-
 
 
 
@@ -34,10 +33,6 @@ LD_FLAGS+=-rdynamic -g  -lelf
 #INC_DIRS+= -I$(NMPP)/include
 #SRC_DIRS = . ./aura 
 #ALL_C    = $(wildcard $(addsuffix /*.c,$(SRC_DIRS)))
-
-VPATH    = $(AURA) $(AURA)/nmc-utils
-
-
 
 
 ALL_C   = ./fft-arm.c 
@@ -63,7 +58,7 @@ ALL_C   += $(AURA)/nmc-utils/easynmc-filters.c
 
 
 OBJECTS_C= $(notdir $(patsubst %.c,%.o,$(ALL_C)))
-
+#VPATH    = $(AURA) $(AURA)/nmc-utils
 
 all : $(TARGET)
 	$(MAKE) -C ../nmc	
@@ -73,6 +68,13 @@ all : $(TARGET)
 %.o: %.c 
 	$(CC) $(CC_FLAGS) -c $(<) -o$(@) $(INC_DIRS) 
 
+%.o: $(AURA)/%.c 
+	$(CC) $(CC_FLAGS) -c $(<) -o$(@) $(INC_DIRS) 
+
+%.o: $(AURA)/nmc-utils/%.c 
+	$(CC) $(CC_FLAGS) -c $(<) -o$(@) $(INC_DIRS) 
+	
+	
 
 $(TARGET): $(OBJECTS_C)
 	$(CC) -o $(@) $(OBJECTS_C) $(LD_FLAGS)
