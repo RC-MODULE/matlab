@@ -34,7 +34,7 @@ void aura_nmc_nmppsSum_s32_256(void* in, void* out)
     int sum=0;
     int i;
     printf("NMC: Aura RPC call nmppsSum_32s\n"); 
-    int *ptr = aura_get_buf(256*4);
+    int *ptr = aura_get_bin(256*4);
     for(i=0; i<256; i++){
 	sum+=ptr[i];
       //printf("%d\n",ptr[i]);
@@ -54,7 +54,7 @@ void aura_nmc_nmppsAbs_s32_256(void *in, void *out)
 {
 	int i=0;
 	int sum=0;
-	int *ptr = aura_get_buf(256*4);
+	int *ptr  =aura_get_bin(256*4);
 	int dst[256];	
 	for(i=0; i<256; i++){
 	    if (ptr[i]>=0)
@@ -64,7 +64,28 @@ void aura_nmc_nmppsAbs_s32_256(void *in, void *out)
 	    //printf("NMC: hello from aura_nmc_nmppsAbs_s32_256 %d %d\n",ptr[i] , dst[i] );
 	}
 	printf("NMC: hello from aura_nmc_nmppsAbs_s32_256\n");
-	aura_put_buf(dst, 256*4);
+	aura_put_bin(dst, 256*4);
+}
+
+void aura_nmc_nmppsAbs_s32(void *in, void *out)
+{
+	int i=0;
+	int sum=0;
+	
+	aura_buffer buf_src = aura_get_buf();
+	int *ptr  =aura_buffer_to_ptr(buf_src);
+	aura_buffer buf_dst = aura_get_buf();
+	int *dst =aura_buffer_to_ptr(buf_dst);	
+	unsigned size = aura_get_u32();
+	for(i=0; i<size; i++){
+	    if (ptr[i]>=0)
+	      dst[i]=ptr[i];
+	    else 
+	      dst[i]=-ptr[i];
+	    //printf("NMC: hello from aura_nmc_nmppsAbs_s32 %d %d\n",ptr[i] , dst[i] );
+	}
+	printf("NMC: hello from aura_nmc_nmppsAbs_s32_256\n");
+	//aura_put_u32( 0x600DBEEF);
 }
 
 void aura_nmc_nmppsAdd_s32_256(void *in, void *out)
@@ -72,15 +93,15 @@ void aura_nmc_nmppsAdd_s32_256(void *in, void *out)
 	int i=0;
 	int sum=0;
 	int dst[256];	
-	int *src0 = aura_get_buf(256*4);
-	int *src1 = aura_get_buf(256*4);
+	int *src0 = aura_get_bin(256*4);
+	int *src1 = aura_get_bin(256*4);
 	
 	for(i=0; i<256; i++){
 	    dst[i]=src0[i]+src1[i];
 	    //printf("NMC: from aura_nmc_nmppsAdd_s32_256 [%d] %d %d %d\n",i, dst[i] , src0[i], src1[i] );
 	}
 	printf("NMC: hello from aura_nmc_nmppsAdd_s32_256\n");
-	aura_put_buf(dst, 256*4);
+	aura_put_bin(dst, 256*4);
 }
 
 
@@ -89,7 +110,7 @@ void aura_nmc_nmppsFFT256Fwd(void *in, void *out)
 	int i=0;
 	int sum=0;
 	nm32sc *dst ;	
-	nm32sc *src = aura_get_buf(256*2*4);
+	nm32sc *src = aura_get_bin(256*2*4);
 	
 	clock_t t0,t1,t;
 	
@@ -111,7 +132,7 @@ void aura_nmc_nmppsFFT256Fwd(void *in, void *out)
 	printf("NMC: Time is: %d\n", t);
 
 	printf("NMC: hello from aura_nmc_nmppsFFT256Fwd\n");
-	aura_put_buf(dst, 256*4);
+	aura_put_bin(dst, 256*4);
 	nmppsFree(dst);
 }
 

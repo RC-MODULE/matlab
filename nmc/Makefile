@@ -20,11 +20,12 @@ OBJECTS :=  \
 	aura-exports.o
 
 TARGET=fft-nmc
-NMPP  = /home/mushkaev/git/nmpp
+NMPP  ?= /home/mushkaev/git/nmpp
+AURA  ?= /home/mushkaev/git/aura
 
 # Set this to libeasynmc-nmc dir. Relative or absolute. 
 # Make sure you build it prior to building the actual project. 
-EASYNMC_DIR     = /home/mushkaev/matlab/aura/nmc-utils/libeasynmc-nmc
+EASYNMC_DIR     = $(AURA)/nmc-utils/libeasynmc-nmc
 
 CROSS_COMPILE   =
 NMCPP_FLAGS     = -DNEURO -OPT2 -inline -I$(EASYNMC_DIR)/include

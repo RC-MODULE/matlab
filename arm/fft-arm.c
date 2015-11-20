@@ -95,6 +95,48 @@ void aura_arm_nmppsAbs_s32_256(struct aura_node *n )
 	slog(0, SLOG_INFO, "ARM: TEST aura_arm_nmppsAbs_s32_256 is ok");
 }
 
+void aura_arm_nmppsAbs_s32(struct aura_node *n , int size )
+{
+        struct aura_buffer *iobuf_src = aura_buffer_request(n, size*4);
+	struct aura_buffer *iobuf_dst = aura_buffer_request(n, size*4);
+	int* src=iobuf_src->data;
+	int* dst=iobuf_dst->data;
+	int* tst=malloc(size*4);
+	int i;
+	src[0]=1;
+	tst[0]=1;
+	for(i=1; i<size; i++){
+	    if (src[i-1]>0)
+	      src[i]=-src[i-1]-1;
+	    else 
+	      src[i]=-src[i-1]+1;
+	    
+	    if (src[i]>0)
+		tst[i]=src[i];
+	    else 
+		tst[i]=-src[i];
+	    //slog(0, SLOG_INFO, "ARM: test  aura_arm_nmppsAbs_s32_256 : [%d] %d vs %d",i, src[i], tst[i]); 
+	}
+	
+	int ret;
+	struct aura_buffer *retbuf; 
+	ret = aura_call(n, "Abs_s32", &retbuf,  iobuf_src, iobuf_dst, size);
+	if (ret != 0) 
+	    BUG(n, "Call failed!");
+
+	//int* dst=aura_buffer_get_in(retbuf,256*4);
+
+	for(i=0; i<size; i++){
+	    if (dst[i]!=tst[i])
+	      slog(0, SLOG_ERROR, "ARM: test  aura_arm_nmppsAbs_s32 is NOT ok: [%d] %d vs %d",i, dst[i], tst[i]); 
+	}
+	aura_buffer_release(n, retbuf);
+	aura_buffer_release(n, iobuf_src);
+	aura_buffer_release(n, iobuf_dst);
+	free(tst);
+	slog(0, SLOG_INFO, "ARM: TEST aura_arm_nmppsAbs_s32 is ok");
+}
+
 
 void aura_arm_nmppsAdd_s32_256(struct aura_node *n )
 {
@@ -145,6 +187,7 @@ int main() {
 	}
 	aura_wait_status(n, AURA_STATUS_ONLINE);
 
+	aura_arm_nmppsAbs_s32(n,256);
 	aura_arm_nmppsFwdFFT256(n);
 	aura_arm_nmppsAbs_s32_256(n);
 	aura_arm_nmppsAdd_s32_256(n);
