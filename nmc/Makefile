@@ -73,10 +73,10 @@ all: $(TARGET).abs
 	$(SILENT_DEP)$(CROSS_COMPILE)gcc -E -MM -xassembler-with-cpp $(<) -o$(@).dep
 	$(SILENT_ASM)nmcc $(ASM_FLAGS) $(<) -o$(@)
 
-$(TARGET).lib: $(OBJECTS)
+$(TARGET).lib: $(OBJECTS) 
 	-$(SILENT_LIBRARIAN)libr -c $(@) $(^) > /dev/null
 
-$(TARGET).abs: $(OBJECTS)
+$(TARGET).abs: $(OBJECTS) $(EASYNMC_DIR)/easynmc.lib
 	-$(SILENT_LINKER)linker  $(BUILDER_FLAGS) -o$(@) $(^) $(LIBS) $(LIBDIR)
 
 $(TARGET).dump: $(TARGET).abs
@@ -88,3 +88,7 @@ run: $(TARGET).abs
 clean:
 	-$(SILENT_CLEAN)rm -f *.asmx; rm -f *.o; rm -f $(TARGET).abs $(TARGET).dump *.dep \
 	*.ac *.map *~ *.abs *.lib
+
+	
+$(EASYNMC_DIR)/easynmc.lib:
+		$(MAKE) -C $(EASYNMC_DIR)
