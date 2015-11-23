@@ -1,8 +1,8 @@
 .SUFFIXES:
 ifeq ($(OS),Windows_NT)
 SHELL =cmd
-AURA  = d:/git/aura
-CC    = d:/SDK/arm-module-linux-gnueabihf/bin/arm-module-linux-gnueabihf-gcc.exe
+#AURA  = d:/git/aura
+CC    = d:/SDK/arm-module-linux-gnueabi/bin/arm-module-linux-gnueabi-gcc
 else
 SHELL =/bin/bash
 CC    = arm-module-linux-gnueabi-gcc 
@@ -12,8 +12,7 @@ PREFIX?=/usr
 DESTDIR?=
 
 TARGET   = fft-arm
-NMPP     ?= /home/mushkaev/git/nmpp
-AURA     ?= /home/mushkaev/git/aura
+AURA     = ../aura
 
 
 
@@ -24,7 +23,7 @@ INC_DIRS+= -DLIBEASYNMC_VERSION=\"0.1.1\"
 #INC_DIRS+= -I/home/mushkaev/matlab/linux-3.10.x/drivers/staging/android/uapi
 #INC_DIRS+= -I/include/uapi
 #INC_DIRS+= -I/drivers/staging/android/uapi
-INC_DIRS+= -I./include 
+INC_DIRS+= -I./include  -I./include/linux
 
 
 CC_FLAGS = -g -Wall -fPIC $(INC_DIRS)

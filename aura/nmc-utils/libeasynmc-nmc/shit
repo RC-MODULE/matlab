@@ -1,0 +1,10 @@
+
+Librarian * v1.06 * (c) 1997-2008 * RC Module.
+Creating library...easynmc.lib
+Adding into library: 
+STARTUP.O
+PRINTF.O
+EASYNMC-IO.O
+PLATFORM.O
+AURA.O
+Work complete.
