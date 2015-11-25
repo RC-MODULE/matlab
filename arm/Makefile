@@ -16,7 +16,7 @@ AURA     = ../aura
 
 
 
-
+INC_DIRS+= -I$(NMPP)/include
 INC_DIRS+= -I$(AURA)/include -I$(AURA)/nmc-utils/include
 INC_DIRS+= -DLIBEASYNMC_VERSION=\"0.1.1\"
 #INC_DIRS+= -I/home/mushkaev/matlab/linux-3.10.x/include/uapi
