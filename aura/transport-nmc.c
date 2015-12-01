@@ -12,7 +12,7 @@
 #define AURA_MAGIC_HDR     0xdeadf00d
 #define AURA_OBJECT_EVENT  0xdeadc0de
 #define AURA_OBJECT_METHOD 0xdeadbeaf
-#define AURA_STRLEN 16 
+#define AURA_STRLEN 32 
 
 struct nmc_aura_object {
 	uint32_t type;

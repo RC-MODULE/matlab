@@ -5,7 +5,7 @@
 #define AURA_OBJECT_EVENT  0xdeadc0de
 #define AURA_OBJECT_METHOD 0xdeadbeaf
 
-#define AURA_STRLEN 16 
+#define AURA_STRLEN 32 
 
 #define U32  "3"
 #define U64  "4"
