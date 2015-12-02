@@ -14,6 +14,7 @@
 
 .SUFFIXES:
 
+SHELL = cmd
 OBJECTS :=  \
 	startup.o \
 	printf.o \
