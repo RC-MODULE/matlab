@@ -337,6 +337,7 @@ struct aura_buffer {
 	struct aura_node   *owner;
 	/** list_entry. Used to queue/deueue buffers */
 	struct list_head    qentry;
+	uint32_t shit;
 	/** The actual data in this buffer */
 	char                data[];
 };

@@ -352,7 +352,7 @@ static uint32_t aura_buffer_to_nmc(struct aura_buffer *buf)
 	nmaddress = easynmc_ion2nmc(pv->h, dsc->share_fd);
 	if (!nmaddress)
 		BUG(node, "Failed to obtain nm address handle");
-
+	//slog(0, SLOG_DEBUG, "NMADDR: %x \n", nmaddress);
 	return nmaddress;
 }
 
